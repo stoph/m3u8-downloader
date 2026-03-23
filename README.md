@@ -1,46 +1,34 @@
-# M3U8 Downloader
+# M3U8 downloader
 
-A simple Python script to download M3U8 playlists and convert them to MP4 videos.
+Downloads an HLS media playlist and muxes it to MP4 with ffmpeg.
 
 ## Requirements
 
-- Python 3.6+
-- ffmpeg (must be installed and available in PATH)
-
-## Installation
-
-1. Clone this repository
-2. Install Python dependencies:
-   ```bash
-   pip install requests
-   ```
+- Python 3
+- `requests` (`pip install requests`)
+- `ffmpeg` on `PATH`
 
 ## Usage
 
 ```bash
-python download.py <m3u8_url> [-o output_file.mp4]
+python download.py <path-or-url> [-o out.mp4] [-V variant]
 ```
 
-### Examples
+Use a **media** playlist (lists segments) or a **master** playlist (lists variants). For a master playlist, pick a variant with `-V` (default `best`).
+
+**`-V` (master only)**
+
+| Form | Meaning |
+|------|--------|
+| `best` / `worst` | Highest or lowest bandwidth |
+| `i0`, `i1`, … | Variant by order in the file |
+| `1080`, `720`, `360` | Match height (pixels) |
+| `1920x1080` | Exact resolution |
+
+## Examples
 
 ```bash
-# Basic usage
-python download.py https://example.com/playlist.m3u8
-
-# With custom output filename
-python download.py https://example.com/playlist.m3u8 -o my_video.mp4
+python download.py ./playlist.m3u8 -o video.mp4
+python download.py https://example.com/master.m3u8 -V 1080 -o video.mp4
+python download.py https://example.com/master.m3u8 -V i2 -o video.mp4
 ```
-
-## How it works
-
-1. Downloads the M3U8 playlist file
-2. Extracts all TS segment URLs
-3. Downloads each TS segment
-4. Merges all segments into a single TS file
-5. Converts to MP4 using ffmpeg
-6. Cleans up temporary files
-
-## Notes
-
-- Temporary files (`segments/` directory and `merged.ts`) are automatically cleaned up
-- The script requires ffmpeg to be installed on your system

@@ -6,3 +6,9 @@ Thumbs.db
 segments/
 *.ts
 merged.ts
+*.mp4
+*.m3u8
+
+
+__pycache__/
+
